@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solemne Nicolas Salinas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'static.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <header class="navbar">
+        <a class="navbar-b" href="#">Control de platos</a>
+        <div class="navbar-c" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#">Opción 1</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Opción 2</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Opción 3</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="row">
+        <nav class="sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#">Autores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Manga</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Otra Sección</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="center">
+            <form action="{% url 'submit' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="item">Nuevo Plato:</label>
+                    <input type="text" class="form-control" id="item" name="item" required>
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input type="number" class="form-control" id="precio" name="precio" required>
+                </div>
+                <div class="form-group">
+                    <label for="ingredientes">Ingredientes:</label>
+                    <textarea class="form-control" id="ingredientes" name="ingredientes" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <select class="form-control" id="categoria" name="categoria" required>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </form>
+
+            <h2>Lista de Elementos</h2>
+            <ul class="list-group">
+                {% for plato in platos %}
+                    <li class="list-group-item">
+                        {{ plato.nombre }} <span class="badge badge-primary">{{ plato.categoria }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</div>
+</body>
+</html>
